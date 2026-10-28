@@ -1,0 +1,30 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: my-api-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: my_api
+      POSTGRES_USER: add_encryption_key
+      POSTGRES_PASSWORD: add_hmac_secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  mongo:
+    image: mongo:7
+    container_name: my-api-mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "{{add_user}}"
+      MONGO_INITDB_ROOT_PASSWORD: "{{add_user}}"
+      MONGO_INITDB_DATABASE: my_api
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  postgres_data:
+  mongo_data:
